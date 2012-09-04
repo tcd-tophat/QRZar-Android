@@ -30,11 +30,15 @@ public class MainActivity extends Activity implements QRScannerInterface{
         
         mHandler = new MainActivityMessageHandler(this);
         
-        mQRScanner = new QRScanner(findViewById(R.id.cameraSurface));
-        
         addListenerToButtons();
         
     }
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		mQRScanner = new QRScanner(findViewById(R.id.cameraSurface));
+	}
     
     @Override
     public void onPause(){
