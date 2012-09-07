@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements QRScannerInterface{
 
@@ -67,7 +68,8 @@ public class MainActivity extends Activity implements QRScannerInterface{
     }
     
     public void hasScannedResult(String result){
-    	
+    	Context context = getApplicationContext();
+
     }
     
     
