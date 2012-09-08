@@ -20,6 +20,7 @@ public class CameraManager {
 	public CameraManager(SurfaceHolder _surfaceHolder, QRScannerInterface _activity) throws IOException{
 		
 		if(Build.VERSION.SDK_INT>8){
+			//Assumes the user has a camera.
 			mCamera = Camera.open(0);
 			Log.i(TAG, "Only devices Gingerbread up should call this.");
 		}else{
@@ -35,11 +36,10 @@ public class CameraManager {
 			parameters.setPictureSize(_surfaceHolder.getSurfaceFrame().width(),_surfaceHolder.getSurfaceFrame().height());
 			mCamera.setParameters(parameters);
 		}catch(RuntimeException e){
-
+			e.printStackTrace();
 		}
 		
 		mCamera.setDisplayOrientation((450-degreeOrientation)%360);
-		
 		
 		mCamera.setPreviewDisplay(_surfaceHolder);
 		

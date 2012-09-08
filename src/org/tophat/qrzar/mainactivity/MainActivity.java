@@ -1,8 +1,11 @@
 package org.tophat.qrzar.mainactivity;
 
+import org.tophat.android.exceptions.HttpException;
+import org.tophat.android.exceptions.NoInternetConnection;
 import org.tophat.qrzar.R;
 import org.tophat.qrzar.qrscanner.QRScanner;
 import org.tophat.qrzar.qrscanner.QRScannerInterface;
+import org.tophat.qrzar.sdkinterface.SDKInterface;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,6 +22,7 @@ public class MainActivity extends Activity implements QRScannerInterface{
 
 	QRScanner mQRScanner;
 	Handler mHandler;
+	SDKInterface sdk;
 	
 	/**
 	 * Activity life cycle methods
@@ -30,6 +34,7 @@ public class MainActivity extends Activity implements QRScannerInterface{
         setContentView(R.layout.activity_qrzar_main);
         
         mHandler = new MainActivityMessageHandler(this);
+        sdk = new SDKInterface();
         
         addListenerToButtons();
         
@@ -68,8 +73,28 @@ public class MainActivity extends Activity implements QRScannerInterface{
     }
     
     public void hasScannedResult(String result){
-    	Context context = getApplicationContext();
-
+    	
+    	this.stopScanForGame();
+    	
+    	Toast t =  Toast.makeText(this.getApplicationContext(), "Successfully joined game", Toast.LENGTH_LONG);
+    	
+    	try 
+    	{
+			sdk.anonymous_connect();
+    	}
+    	catch (NoInternetConnection e)
+    	{
+    		// Do something special when there is no internet connection / server is unreachable ??
+    		t.setText(e.getMessage());
+    	}
+    	catch (HttpException e) 
+    	{
+    		//This will show whatever error the user encounters via toast on the users screen.
+    		t.setText(e.getMessage());
+		}
+    	
+    	t.show();
+    	
     }
     
     

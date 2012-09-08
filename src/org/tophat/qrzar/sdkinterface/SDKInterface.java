@@ -25,7 +25,7 @@ public class SDKInterface
 	 * Test 1
 	 * @return
 	 */
-	protected void anonymous_connect() throws HttpException
+	public void anonymous_connect() throws HttpException
 	{		
 		ApiTokenMapper atm = new ApiTokenMapper(apic);
 		apic.setApitoken(atm.getAnonymousToken());
@@ -34,7 +34,7 @@ public class SDKInterface
 	/**
 	 * Test 2
 	 */
-	private Player joinGame(String qrCode, Integer gameId) throws HttpException
+	public Player joinGame(String qrCode, Integer gameId) throws HttpException
 	{
 		  Game g = new Game();
 		  
@@ -49,7 +49,13 @@ public class SDKInterface
 		  return (Player)pm.create(p);
 	}
 	
-	private void kill(Player killer, String victimCode) throws HttpException
+	/**
+	 * This method provides direct access to the kill request of the server.
+	 * @param killer
+	 * @param victimCode
+	 * @throws HttpException
+	 */
+	public void kill(Player killer, String victimCode) throws HttpException
 	{
 		  Kill k = new Kill();
 		  k.setKiller(killer);
@@ -64,7 +70,7 @@ public class SDKInterface
 	 * Test 4
 	 * @throws HttpException 
 	 */
-	private void respawn(Player me) throws HttpException
+	public void respawn(Player me) throws HttpException
 	{	  
 		PlayerMapper pm = new PlayerMapper(apic);
 		
