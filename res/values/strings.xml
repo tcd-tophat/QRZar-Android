@@ -18,5 +18,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_game_play">GamePlayActivity</string>
     <string name="shoot">Shoot</string>
+    <string name="title_activity_new">NewActivity</string>
 
 </resources>
