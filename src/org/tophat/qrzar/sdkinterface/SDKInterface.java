@@ -115,7 +115,7 @@ public class SDKInterface
 		}
     }
 	
-	public Player getPlayer(){
+	public org.tophat.QRzar.models.Player getPlayer(){
 		return mPlayer;
 	}
 	
