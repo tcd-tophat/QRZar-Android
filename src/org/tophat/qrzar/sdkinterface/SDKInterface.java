@@ -5,8 +5,6 @@ import org.tophat.QRzar.mapper.PlayerMapper;
 import org.tophat.QRzar.models.Kill;
 import org.tophat.QRzar.models.Player;
 import org.tophat.android.exceptions.HttpException;
-import org.tophat.android.exceptions.NotFound;
-import org.tophat.android.mapping.ApiToken;
 import org.tophat.android.mapping.Game;
 import org.tophat.android.model.ApiTokenMapper;
 import org.tophat.android.networking.ApiCommunicator;
@@ -78,5 +76,80 @@ public class SDKInterface
 		me.setAccessUrl("players");
 		pm.update(me);
 	}
+	
+	
+	/**
+	 * Added to class for full decoupling
+	 */
+	
+	private String mTShirtCode;
+	private int mGameCode;
+	private Player mPlayer;
+	
+	
+	public void setGameCode(int gameCode){
+		mGameCode = gameCode;
+	}
+	
+	public void setTShirtCode(String tShirtCode){
+		mTShirtCode = tShirtCode;
+	}
+	
+	public boolean joinGame(){
+		if(mGameCode==0||!isValidPlayerCode(mTShirtCode))
+				return false;
+    	try {
+			mPlayer = this.joinGame(mTShirtCode, mGameCode);
+			return true;
+		} catch (HttpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+    }
+	
+	public Player getPlayer(){
+		return mPlayer;
+	}
+	
+	public boolean validToProcessTShirt(String s){
+		return isValidPlayerCode(s)&&mTShirtCode==null;
+	}
+	
+	public boolean validToProcessGameCode(String s){
+		return isValidGameCode(s)&&mTShirtCode!=null;
+	}
+	
+	/**
+	 * Static validation / parsing methods
+	 */
+	
+	
+    public static boolean isValidPlayerCode(String s){
+    	if(s.length()!=6)
+    		return false;
+    	if(!Character.isUpperCase(s.charAt(0)))
+    		return false;
+   
+    	return true;
+    }
+    
+    public static boolean isValidGameCode(String s){
+    	try{
+    		Integer.parseInt(s);
+    		return true;
+    	}catch(Exception e){
+    		return false;
+    	}
+    }
+    
+    
+    public static int decodeGameCode(String s){
+    	return Integer.parseInt(s);
+    }
+    
+    
+    
+    
 	
 }

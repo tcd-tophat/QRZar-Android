@@ -1,4 +1,4 @@
-package org.tophat.qrzar.mainactivity;
+package org.tophat.qrzar.activities.mainactivity;
 
 public class MainActivityConstants {
 	public static final int PLAY_BUTTON 	 = 0x000000;

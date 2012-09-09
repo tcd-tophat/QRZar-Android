@@ -1,4 +1,4 @@
-package org.tophat.qrzar.mainactivity;
+package org.tophat.qrzar.activities.mainactivity;
 
 
 import android.os.Handler;

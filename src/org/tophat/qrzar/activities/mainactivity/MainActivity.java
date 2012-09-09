@@ -1,14 +1,16 @@
-package org.tophat.qrzar.mainactivity;
+package org.tophat.qrzar.activities.mainactivity;
 
 import org.tophat.android.exceptions.HttpException;
 import org.tophat.android.exceptions.NoInternetConnection;
 import org.tophat.qrzar.R;
+import org.tophat.qrzar.activities.gameplayactivity.GamePlayActivity;
 import org.tophat.qrzar.qrscanner.QRScanner;
 import org.tophat.qrzar.qrscanner.QRScannerInterface;
 import org.tophat.qrzar.sdkinterface.SDKInterface;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,9 +22,9 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements QRScannerInterface{
 
-	QRScanner mQRScanner;
-	Handler mHandler;
-	SDKInterface sdk;
+	private QRScanner mQRScanner;
+	private Handler mHandler;
+	private SDKInterface sdk;
 	
 	/**
 	 * Activity life cycle methods
@@ -74,27 +76,29 @@ public class MainActivity extends Activity implements QRScannerInterface{
     
     public void hasScannedResult(String result){
     	
-    	this.stopScanForGame();
-    	
-    	Toast t =  Toast.makeText(this.getApplicationContext(), "Successfully joined game", Toast.LENGTH_LONG);
-    	
-    	try 
-    	{
-			sdk.anonymous_connect();
+    	if(sdk.validToProcessTShirt(result)){
+    		
+	    	this.stopScanForGame();
+	    	
+	    	if(setAnonymousToken()){
+    			sdk.setTShirtCode(result);
+    		}
+	    	
+    	}else if(sdk.validToProcessGameCode(result)){
+    		
+    		this.stopScanForGame();
+	    	
+    		sdk.setGameCode(SDKInterface.decodeGameCode(result));
+    		
+    		if(sdk.joinGame()){
+    			
+    			Intent intent = new Intent(this, GamePlayActivity.class);
+    			intent.putExtra("player",sdk.getPlayer());
+    			startActivity(intent);
+    			
+    		}
+	   
     	}
-    	catch (NoInternetConnection e)
-    	{
-    		// Do something special when there is no internet connection / server is unreachable ??
-    		t.setText(e.getMessage());
-    	}
-    	catch (HttpException e) 
-    	{
-    		//This will show whatever error the user encounters via toast on the users screen.
-    		t.setText(e.getMessage());
-		}
-    	
-    	t.show();
-    	
     }
     
     
@@ -117,6 +121,37 @@ public class MainActivity extends Activity implements QRScannerInterface{
     	rankButton.setId(MainActivityConstants.RANK_BUTTON);
     	rankButton.setOnTouchListener(listener);
     }
+    
+    
+	    /**
+	     *  Private interface helper methods
+	     */
+    
+    
+    private boolean setAnonymousToken(){
+    	Toast t =  Toast.makeText(this.getApplicationContext(), null, Toast.LENGTH_LONG);
+    	boolean didSucceed = false;
+    	try 
+    	{
+			sdk.anonymous_connect();
+			t.setText("Successfully joined game");
+			didSucceed = true;
+    	}
+    	catch (NoInternetConnection e)
+    	{
+    		// Do something special when there is no internet connection / server is unreachable ??
+    		t.setText(e.getMessage());
+    	}
+    	catch (HttpException e) 
+    	{
+    		//This will show whatever error the user encounters via toast on the users screen.
+    		t.setText(e.getMessage());
+		}
+    	
+    	t.show();
+    	return didSucceed;
+    }
+    
     
     /**
      * QRScanner Interface Methods
