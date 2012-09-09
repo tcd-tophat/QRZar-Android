@@ -1,5 +1,7 @@
 package org.tophat.qrzar.sdkinterface;
 
+import java.util.HashMap;
+
 import org.tophat.QRzar.mapper.KillMapper;
 import org.tophat.QRzar.mapper.PlayerMapper;
 import org.tophat.QRzar.models.Kill;
@@ -92,6 +94,15 @@ public class SDKInterface
 	{
 		mPlayer = player;
 		apic = new ApiCommunicator(new Constants());
+	}
+	
+	public HashMap<String,Integer> getTeamScoresAndRemainingTime(){
+		
+		HashMap<String,Integer> map = new HashMap<String,Integer>();
+		map.put("team1Score", 3400);
+		map.put("team2Score", 5000);
+		map.put("timer", 290);
+		return map;
 	}
 	
 	public void setGameCode(int gameCode){

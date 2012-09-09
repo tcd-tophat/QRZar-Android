@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent" >
-        
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent" >
+    
     <org.tophat.qrzar.qrscanner.camera.CameraSurface 
 	   android:id="@+id/cameraSurface"
 	   android:layout_width="match_parent"
@@ -14,11 +14,53 @@
 	    android:layout_height="match_parent"
 	    android:orientation="vertical" >
 	    
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:background="#000000" >
+	        
+	        <TextView
+			    android:id="@+id/team1Score"
+			    android:layout_width="0dp"
+			    android:layout_weight="1"
+			    android:layout_height="wrap_content"
+			    android:background="#000000"
+			    android:padding="5dp"
+			    android:text="4000"
+			    android:textSize="27dp"
+	            android:gravity="center" />
+	        
+	        <TextView
+			    android:id="@+id/timer"
+			    android:layout_width="0dp"
+			    android:layout_weight="1"
+			    android:layout_height="wrap_content"
+			    android:background="#000000"
+			    android:padding="5dp"
+			    android:text="14:20"
+			    android:textSize="30dp" 
+	            android:gravity="center" />
+	        
+	        <TextView
+			    android:id="@+id/team2Score"
+			    android:layout_width="0dp"
+			    android:layout_weight="1"
+			    android:layout_height="wrap_content"
+			    android:padding="5dp"
+			    android:text="2003"
+			    android:textSize="27dp"
+	            android:gravity="center" />
+	        
+	    </LinearLayout>
+	    	    
 	    <FrameLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="0dp"
 	        android:layout_weight="1" >
+
 			
+
 			<View 
 			    android:layout_width="match_parent"
 			    android:layout_height="match_parent"
@@ -27,54 +69,38 @@
 	       
 	    </FrameLayout>
 	    
-	    <ImageView
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:contentDescription="@string/logo_description"
-	        android:scaleType="fitXY"
-	        android:src="@drawable/redbanner" />
-	
 	    <LinearLayout
 	        android:id="@+id/linearLayout1"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="bottom"
-	        android:background="@drawable/blue_gradient_background"
 	        android:alpha="0.9"
+	        android:background="#000000"
 	        android:baselineAligned="false"
-	        android:orientation="horizontal"
-	        android:paddingTop="10dp" >
-	        
+	        android:orientation="horizontal" >
 	    
-	        <FrameLayout 
+	        <FrameLayout
 	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
 	            android:layout_weight="1.2"
-	            android:layout_height="match_parent">
+	            android:padding="10dp" >
 	        	
 	        	<LinearLayout
+	        	    android:layout_width="match_parent"
+	        	    android:layout_height="wrap_content"
+	        	    android:layout_gravity="center"
 	        	    android:baselineAligned="false"
-	            	android:orientation="vertical"
-	            	android:layout_height="wrap_content"
-	            	android:layout_width="wrap_content"
-	            	android:layout_gravity="center">
+	        	    android:orientation="vertical" >
 	            	
-	            	<Button 
-	        	    	android:layout_height="wrap_content" 
-	        	    	android:layout_width="wrap_content" 
-	        	    	android:background="@drawable/join_button" 
-	        	    	android:text="@string/empty" 
-	        	    	android:id="@+id/shoot_button" />
-	            	
-	                <TextView 
-	                	android:textColor="#aaa6b1"
-	                	android:layout_margin="5dp" 
-	                	android:gravity="center"
-	                	android:text="@string/shoot"
-	                	android:layout_width="fill_parent"
-	                	android:layout_height="wrap_content" 
-	                	android:textSize="20dp"
-	           
-	                	/>
+	            	<Button
+	            	    android:id="@+id/shoot_button"
+	            	    android:layout_width="match_parent"
+	            	    android:layout_height="wrap_content"
+	            	    android:background="@drawable/btn_red_matte"
+	            	    android:text="@string/shoot"
+	            	    android:textColor="#FFFFFF"
+	            	    android:textSize="40dp"
+	            	    android:typeface="sans" />
 	            
 	        	</LinearLayout>
 	        	
