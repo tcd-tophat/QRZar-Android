@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements QRScannerInterface{
 
+	private static final String TAG = MainActivity.class.getSimpleName();
+	
 	private QRScanner mQRScanner;
 	private Handler mHandler;
 	private SDKInterface sdk;
@@ -91,13 +94,12 @@ public class MainActivity extends Activity implements QRScannerInterface{
     		sdk.setGameCode(SDKInterface.decodeGameCode(result));
     		
     		if(sdk.joinGame()){
-    			
+    			Log.i(TAG, "Game Joined");
     			Intent intent = new Intent(this, GamePlayActivity.class);
     			intent.putExtra("player",sdk.getPlayer());
     			startActivity(intent);
-    			
+    		
     		}
-	   
     	}
     }
     
@@ -129,26 +131,26 @@ public class MainActivity extends Activity implements QRScannerInterface{
     
     
     private boolean setAnonymousToken(){
-    	Toast t =  Toast.makeText(this.getApplicationContext(), null, Toast.LENGTH_LONG);
+
     	boolean didSucceed = false;
     	try 
     	{
 			sdk.anonymous_connect();
-			t.setText("Successfully joined game");
+			Log.i(TAG, "Successfully attained api token.");
 			didSucceed = true;
     	}
     	catch (NoInternetConnection e)
     	{
     		// Do something special when there is no internet connection / server is unreachable ??
-    		t.setText(e.getMessage());
+    		Log.i(TAG,e.getMessage());
     	}
     	catch (HttpException e) 
     	{
     		//This will show whatever error the user encounters via toast on the users screen.
-    		t.setText(e.getMessage());
+    		Log.i(TAG,e.getMessage());
 		}
     	
-    	t.show();
+
     	return didSucceed;
     }
     

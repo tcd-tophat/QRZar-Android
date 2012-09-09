@@ -40,6 +40,7 @@ public class SDKInterface
 		  
 		  Player p = new Player();
 		  p.setGame(g);
+		  p.setName("I'm the best");
 		  p.setQrcode(qrCode);
 		  
 		  PlayerMapper pm = new PlayerMapper(apic);

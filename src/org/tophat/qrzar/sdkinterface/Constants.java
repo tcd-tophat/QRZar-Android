@@ -1,6 +1,5 @@
 package org.tophat.qrzar.sdkinterface;
 
-import org.tophat.android.*;
 
 public class Constants extends org.tophat.android.Constants
 {
@@ -35,7 +34,7 @@ public class Constants extends org.tophat.android.Constants
 	/**
 	 * The API URL requires a trailing slash
 	 */
-	public final String API_URL = "http://quack.netsoc.tcd.ie:443/";
+	public final String API_URL = "http://arboroia.com:443/";
 	
 	public final int SIGNIN_ACTIVITY = 0x1001;
 	
