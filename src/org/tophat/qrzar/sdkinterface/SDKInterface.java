@@ -87,6 +87,12 @@ public class SDKInterface
 	private Player mPlayer;
 	
 	
+	public SDKInterface(Player player)
+	{
+		mPlayer = player;
+		apic = new ApiCommunicator(new Constants());
+	}
+	
 	public void setGameCode(int gameCode){
 		mGameCode = gameCode;
 	}
