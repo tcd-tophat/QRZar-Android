@@ -1,6 +1,9 @@
 package org.tophat.qrzar.activities.gameplayactivity;
 
+import org.tophat.android.exceptions.HttpException;
+import org.tophat.android.mapping.Game;
 import org.tophat.qrzar.R;
+import org.tophat.qrzar.activities.mainactivity.MainActivity;
 import org.tophat.qrzar.qrscanner.QRScanner;
 import org.tophat.qrzar.qrscanner.QRScannerInterface;
 import org.tophat.qrzar.sdkinterface.SDKInterface;
@@ -29,7 +32,10 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
         setContentView(R.layout.activity_game_play);
         
         mHandler = new GamePlayActivityMessageHandler(this);
-        sdk = new SDKInterface((Player)getIntent().getParcelableExtra("player"));
+        
+        //Bundle b = getIntent().getExtras();
+        //org.tophat.QRzar.models.Player p = (org.tophat.QRzar.models.Player)b.getParcelable("player");
+        this.sdk = MainActivity.sdk;
         
         addListenerToButtons();
     }
@@ -65,9 +71,16 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
     	mQRScanner.cancelPreviewCallback();
     }
     
-    public void hasScannedResult(String result){
-    	
-    	
+    public void hasScannedResult(String result)
+    {
+    	try 
+    	{
+			sdk.kill(sdk.getPlayer(), result);
+		} 
+    	catch (HttpException e) 
+    	{
+			e.printStackTrace();
+		}	
     }
     
     /**

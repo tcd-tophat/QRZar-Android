@@ -7,6 +7,7 @@ import org.tophat.qrzar.activities.gameplayactivity.GamePlayActivity;
 import org.tophat.qrzar.qrscanner.QRScanner;
 import org.tophat.qrzar.qrscanner.QRScannerInterface;
 import org.tophat.qrzar.sdkinterface.SDKInterface;
+import org.tophat.QRzar.models.Player;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +28,9 @@ public class MainActivity extends Activity implements QRScannerInterface{
 	
 	private QRScanner mQRScanner;
 	private Handler mHandler;
-	private SDKInterface sdk;
+	public static SDKInterface sdk;
+	
+	public static Player p;
 	
 	/**
 	 * Activity life cycle methods
@@ -96,7 +99,8 @@ public class MainActivity extends Activity implements QRScannerInterface{
     		if(sdk.joinGame()){
     			Log.i(TAG, "Game Joined");
     			Intent intent = new Intent(this, GamePlayActivity.class);
-    			intent.putExtra("player",sdk.getPlayer());
+    			//intent.putExtra("player", (org.tophat.QRzar.models.Player)sdk.getPlayer());
+    			MainActivity.p = sdk.getPlayer();
     			startActivity(intent);
     		
     		}
