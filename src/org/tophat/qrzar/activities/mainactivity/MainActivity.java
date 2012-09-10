@@ -1,5 +1,6 @@
 package org.tophat.qrzar.activities.mainactivity;
 
+import org.tophat.QRzar.models.Player;
 import org.tophat.android.exceptions.HttpException;
 import org.tophat.android.exceptions.NoInternetConnection;
 import org.tophat.qrzar.R;
@@ -7,7 +8,6 @@ import org.tophat.qrzar.activities.gameplayactivity.GamePlayActivity;
 import org.tophat.qrzar.qrscanner.QRScanner;
 import org.tophat.qrzar.qrscanner.QRScannerInterface;
 import org.tophat.qrzar.sdkinterface.SDKInterface;
-import org.tophat.QRzar.models.Player;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,7 +20,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MainActivity extends Activity implements QRScannerInterface{
 

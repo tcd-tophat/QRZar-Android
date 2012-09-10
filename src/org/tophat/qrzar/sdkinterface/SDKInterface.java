@@ -4,17 +4,20 @@ import java.util.HashMap;
 
 import org.tophat.QRzar.mapper.KillMapper;
 import org.tophat.QRzar.mapper.PlayerMapper;
+import org.tophat.QRzar.models.Alive;
 import org.tophat.QRzar.models.Kill;
 import org.tophat.QRzar.models.Player;
-import org.tophat.QRzar.models.Alive;
 import org.tophat.android.exceptions.HttpException;
 import org.tophat.android.mapping.Game;
 import org.tophat.android.model.ApiTokenMapper;
 import org.tophat.android.networking.ApiCommunicator;
 
+import android.util.Log;
+
 public class SDKInterface 
 {
 
+	private static final String TAG = SDKInterface.class.getSimpleName();
 	private ApiCommunicator apic;
 	private Integer score = 0;
 	
@@ -130,7 +133,9 @@ public class SDKInterface
 		
 		this.score = a.getScore();
 		
-		return a.getAlive();
+		boolean alive = a.getAlive();
+		Log.i(TAG, "Alive:"+alive);
+		return alive;
 	}
 	
 	public boolean joinGame(){

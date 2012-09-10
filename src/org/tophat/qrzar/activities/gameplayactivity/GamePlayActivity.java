@@ -14,6 +14,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,11 +23,12 @@ import android.widget.TextView;
 
 public class GamePlayActivity extends Activity implements QRScannerInterface {
 
+	private static final String TAG = GamePlayActivity.class.getSimpleName();
 	private QRScanner mQRScanner;
 	private GamePlayActivityMessageHandler mHandler;
 	private SDKInterface sdk;
 	private TextView mTeam1Score, mTeam2Score, mTimer;
-	private boolean mDead;
+	private boolean mAlive;
 	
 	private GamePlayActivityCountDownTimer mCountdownTimer;
 	
@@ -46,7 +48,7 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
         mTeam2Score = (TextView)findViewById(R.id.team2Score);
         mTimer = (TextView)findViewById(R.id.timer);
         
-        mDead = false;
+        mAlive = true;
         
         updateScoresAndTimer();
         
@@ -101,7 +103,12 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
     }
     
     public void checkIfDead(){
-    	
+    	if(mAlive){
+    		if(!(mAlive = sdk.playerIsAlive())){
+    			
+    			Log.i(TAG, "OH NOOOO, I'M DEAD.");
+    		}
+    	}
     }
     
     /**
