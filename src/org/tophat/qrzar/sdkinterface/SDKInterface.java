@@ -6,6 +6,7 @@ import org.tophat.QRzar.mapper.KillMapper;
 import org.tophat.QRzar.mapper.PlayerMapper;
 import org.tophat.QRzar.models.Kill;
 import org.tophat.QRzar.models.Player;
+import org.tophat.QRzar.models.Alive;
 import org.tophat.android.exceptions.HttpException;
 import org.tophat.android.mapping.Game;
 import org.tophat.android.model.ApiTokenMapper;
@@ -15,6 +16,7 @@ public class SDKInterface
 {
 
 	private ApiCommunicator apic;
+	private Integer score = 0;
 	
 	public SDKInterface()
 	{
@@ -96,7 +98,8 @@ public class SDKInterface
 		apic = new ApiCommunicator(new Constants());
 	}
 	
-	public HashMap<String,Integer> getTeamScoresAndRemainingTime(){
+	public HashMap<String,Integer> getTeamScoresAndRemainingTime()
+	{
 		
 		HashMap<String,Integer> map = new HashMap<String,Integer>();
 		map.put("team1Score", 3400);
@@ -111,6 +114,23 @@ public class SDKInterface
 	
 	public void setTShirtCode(String tShirtCode){
 		mTShirtCode = tShirtCode;
+	}
+	
+	public boolean playerIsAlive()
+	{
+		PlayerMapper pm = new PlayerMapper(this.apic);
+		
+		Alive a = new Alive();
+		try {
+			pm.get(a);
+		} catch (HttpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.score = a.getScore();
+		
+		return a.getAlive();
 	}
 	
 	public boolean joinGame(){
