@@ -124,20 +124,23 @@ public class SDKInterface
 	{
 		PlayerMapper pm = new PlayerMapper(this.apic);
 		
-		Alive a = new Alive();
-		a.setId(MainActivity.p.getId());
-		try {
-			pm.get(a);
-		} catch (HttpException e) {
+		Player alive = new Player();
+		alive.setId(MainActivity.p.getId());
+		try 
+		{
+			alive = pm.get(alive);
+		} 
+		catch (HttpException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		this.score = a.getScore();
+		this.score = alive.getScore();
 		
-		boolean alive = a.getAlive();
-		Log.i(TAG, "Alive:"+alive);
-		return alive;
+		boolean aliveBool = alive.getAlive();
+		Log.i(TAG, "Alive:"+aliveBool);
+		return aliveBool;
 	}
 	
 	public boolean joinGame(){
