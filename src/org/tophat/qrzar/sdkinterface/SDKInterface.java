@@ -11,6 +11,7 @@ import org.tophat.android.exceptions.HttpException;
 import org.tophat.android.mapping.Game;
 import org.tophat.android.model.ApiTokenMapper;
 import org.tophat.android.networking.ApiCommunicator;
+import org.tophat.qrzar.activities.mainactivity.MainActivity;
 
 public class SDKInterface 
 {
@@ -121,6 +122,7 @@ public class SDKInterface
 		PlayerMapper pm = new PlayerMapper(this.apic);
 		
 		Alive a = new Alive();
+		a.setId(MainActivity.p.getId());
 		try {
 			pm.get(a);
 		} catch (HttpException e) {
