@@ -105,7 +105,7 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
     public void checkIfDead(){
     	if(mAlive){
     		if(!(mAlive = sdk.playerIsAlive())){
-    			
+    			mTimer.setTextColor(0xFFFF0000);
     			Log.i(TAG, "OH NOOOO, I'M DEAD.");
     		}
     	}
