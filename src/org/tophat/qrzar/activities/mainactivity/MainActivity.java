@@ -1,5 +1,8 @@
 package org.tophat.qrzar.activities.mainactivity;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.tophat.QRzar.models.Player;
 import org.tophat.android.exceptions.HttpException;
 import org.tophat.android.exceptions.NoInternetConnection;
@@ -10,9 +13,11 @@ import org.tophat.qrzar.qrscanner.QRScannerInterface;
 import org.tophat.qrzar.sdkinterface.SDKInterface;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -85,9 +90,9 @@ public class MainActivity extends Activity implements QRScannerInterface{
     		
 	    	this.stopScanForGame();
 	    	
-	    	if(setAnonymousToken()){
-    			sdk.setTShirtCode(result);
-    		}
+	    	sdk.setTShirtCode(result);
+	    	
+	    	new AnonymousUserTask().execute();
 	    	
     	}else if(sdk.validToProcessGameCode(result)){
     		
@@ -95,16 +100,71 @@ public class MainActivity extends Activity implements QRScannerInterface{
 	    	
     		sdk.setGameCode(SDKInterface.decodeGameCode(result));
     		
-    		if(sdk.joinGame()){
-    			Log.i(TAG, "Game Joined");
-    			Intent intent = new Intent(this, GamePlayActivity.class);
-    			//intent.putExtra("player", (org.tophat.QRzar.models.Player)sdk.getPlayer());
-    			MainActivity.p = sdk.getPlayer();
-    			startActivity(intent);
-    		
-    		}
+    		new JoinGameTask().execute();
     	}
     }
+    
+    private class AnonymousUserTask extends AsyncTask<Void, Boolean, Boolean> 
+	{	
+		private ProgressDialog dialog;
+		
+		@Override    
+		protected void onPreExecute() 
+		{       
+		    super.onPreExecute();
+		    
+		    dialog = ProgressDialog.show(MainActivity.this, "", 
+	                "Loading Server Details. Please wait...", true);
+		}
+		    
+		protected Boolean doInBackground(Void... details) 
+		{
+			return MainActivity.this.setAnonymousToken();
+		}
+
+	     protected void onPostExecute(Boolean data)
+	     {
+	    	this.dialog.cancel();
+	    	
+	    	if (data)
+	    	{
+	 			Log.i(TAG, "T-Shirt code loaded");
+	    	}
+	     }
+	}
+    
+    private class JoinGameTask extends AsyncTask<Void, Boolean, Boolean> 
+	{	
+		private ProgressDialog dialog;
+		
+		@Override    
+		protected void onPreExecute() 
+		{       
+		    super.onPreExecute();
+		    
+		    dialog = ProgressDialog.show(MainActivity.this, "", 
+	                "Join Game. Please wait...", true);
+		}
+		    
+		protected Boolean doInBackground(Void... details) 
+		{
+			return sdk.joinGame();
+		}
+
+	     protected void onPostExecute(Boolean data)
+	     {
+	    	this.dialog.cancel();
+	    	
+	    	if (data)
+	    	{
+	 			Intent intent = new Intent(MainActivity.this, GamePlayActivity.class);
+				
+	 			MainActivity.p = sdk.getPlayer();
+	 			startActivity(intent);
+	 			Log.i(TAG, "Game Joined");
+	    	}
+	     }
+	 }
     
     
     /**
