@@ -10,8 +10,11 @@ import org.tophat.qrzar.qrscanner.QRScannerInterface;
 import org.tophat.qrzar.sdkinterface.SDKInterface;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GamePlayActivity extends Activity implements QRScannerInterface {
 
@@ -88,26 +92,72 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
     
     public void hasScannedResult(String result)
     {
-    	try 
-    	{
-			sdk.kill(sdk.getPlayer(), result);
-		} 
-    	catch (HttpException e) 
-    	{
-			e.printStackTrace();
-		}	
+    	new HasScannedResult(result).execute();
     }
+    
+    private class HasScannedResult extends AsyncTask<Void, Boolean, Boolean> 
+ 	{	
+ 		private ProgressDialog dialog;
+ 		private String result;
+ 		
+ 		public HasScannedResult(String result)
+ 		{
+ 			super();
+ 			
+ 			this.result = result;
+ 		}
+ 		
+ 		@Override    
+ 		protected void onPreExecute() 
+ 		{       
+ 		    super.onPreExecute();
+ 		    
+ 		    dialog = ProgressDialog.show(GamePlayActivity.this, "", 
+ 	                "Termination in progress...", true);
+ 		}
+ 		    
+ 		protected Boolean doInBackground(Void... details) 
+ 		{
+ 	    	try 
+ 	    	{
+ 				sdk.kill(sdk.getPlayer(), this.result);
+ 				
+ 				return true;
+ 			} 
+ 	    	catch (HttpException e) 
+ 	    	{
+ 				e.printStackTrace();
+ 				
+ 				return false;
+ 			}
+ 		}
+
+ 	     protected void onPostExecute(Boolean data)
+ 	     {
+ 	    	this.dialog.cancel();
+ 	    	
+ 	    	if (data)
+ 	    	{
+ 	    		Toast t = Toast.makeText(GamePlayActivity.this.getApplicationContext(), "Other player terminated", Toast.LENGTH_SHORT);
+ 	    		Log.i(TAG, "Terminated.");
+ 	    	}
+ 	     }
+ 	 }
+    
     
     public void setTimer(String timeToSet){
     	mTimer.setText(timeToSet);
     }
     
+    public void checkAlive()
+    {
+    	mAlive = sdk.playerIsAlive();
+    }
+    
     public void checkIfDead(){
     	if(mAlive){
-    		if(!(mAlive = sdk.playerIsAlive())){
-    			mTimer.setTextColor(0xFFFF0000);
-    			Log.i(TAG, "OH NOOOO, I'M DEAD.");
-    		}
+			mTimer.setTextColor(0xFFFF0000);
+			Log.i(TAG, "OH NOOOO, I'M DEAD.");
     	}
     }
     

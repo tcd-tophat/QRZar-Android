@@ -1,6 +1,12 @@
 package org.tophat.qrzar.activities.gameplayactivity;
 
+import org.tophat.android.exceptions.HttpException;
+
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.util.Log;
+import android.widget.Toast;
 
 public class GamePlayActivityCountDownTimer extends CountDownTimer {
 
@@ -22,8 +28,28 @@ public class GamePlayActivityCountDownTimer extends CountDownTimer {
 		int secondsToGo = (int)(millisUntilFinished / 1000);
         mGamePlayActivity.setTimer(String.format("%02d:%02d", secondsToGo/60,secondsToGo%60));
         
-        new Thread(new GamePlayActivityDeadCheckerRunnable(mGamePlayActivity)).run();
+        new CheckIfDead().execute();
 
 	}
+	
+    private class CheckIfDead extends AsyncTask<Void, Void, Void> 
+ 	{	
+ 		@Override    
+ 		protected void onPreExecute() 
+ 		{       
+ 		    super.onPreExecute();
+ 		}
+ 		    
+ 		protected Void doInBackground(Void... details) 
+ 		{
+ 			mGamePlayActivity.checkAlive();
+			return null;
+ 		}
+
+ 	     protected void onPostExecute(Boolean data)
+ 	     {
+ 	    	mGamePlayActivity.checkAlive();
+ 	     }
+ 	 }
 
 }
