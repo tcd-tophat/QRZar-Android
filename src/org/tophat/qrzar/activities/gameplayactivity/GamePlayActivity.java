@@ -13,7 +13,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
@@ -27,8 +26,9 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
 	private GamePlayActivityMessageHandler mHandler;
 	private SDKInterface sdk;
 	private TextView mTeam1Score, mTeam2Score, mTimer;
+	private boolean mDead;
 	
-	private CountDownTimer mCountdownTimer;
+	private GamePlayActivityCountDownTimer mCountdownTimer;
 	
 	
     @Override
@@ -45,6 +45,8 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
         mTeam1Score = (TextView)findViewById(R.id.team1Score);
         mTeam2Score = (TextView)findViewById(R.id.team2Score);
         mTimer = (TextView)findViewById(R.id.timer);
+        
+        mDead = false;
         
         updateScoresAndTimer();
         
@@ -94,6 +96,14 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
 		}	
     }
     
+    public void setTimer(String timeToSet){
+    	mTimer.setText(timeToSet);
+    }
+    
+    public void checkIfDead(){
+    	
+    }
+    
     /**
      * Private methods
      */
@@ -117,17 +127,9 @@ public class GamePlayActivity extends Activity implements QRScannerInterface {
         if(mCountdownTimer!=null)
         	mCountdownTimer.cancel();
         
-        mCountdownTimer = new CountDownTimer(map.get("timer")*1000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-            	int secondsToGo = (int)(millisUntilFinished / 1000);
-                mTimer.setText(String.format("%02d:%02d", secondsToGo/60,secondsToGo%60));
-            }
-
-            public void onFinish() {
-                mTimer.setText("done!");
-            }
-         }.start();
+        mCountdownTimer = new GamePlayActivityCountDownTimer(this, map.get("timer")*1000, 1000);
+        
+        mCountdownTimer.start();
     }
     /**
      * Interface required methods.
