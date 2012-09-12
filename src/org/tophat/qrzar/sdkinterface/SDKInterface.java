@@ -2,6 +2,7 @@ package org.tophat.qrzar.sdkinterface;
 
 import java.util.HashMap;
 
+import org.tophat.QRzar.mapper.AliveMapper;
 import org.tophat.QRzar.mapper.KillMapper;
 import org.tophat.QRzar.mapper.PlayerMapper;
 import org.tophat.QRzar.models.Alive;
@@ -122,16 +123,14 @@ public class SDKInterface
 	
 	public boolean playerIsAlive()
 	{
-		PlayerMapper pm = new PlayerMapper(this.apic);
+		AliveMapper am = new AliveMapper(this.apic);
 		
-		Player alive = new Player();
-		alive.setId(MainActivity.p.getId());
-		try 
-		{
-			alive = pm.get(alive);
-		} 
-		catch (HttpException e) 
-		{
+		Alive alive = new Alive();
+		alive.setId(mPlayer.getId());
+		
+		try {
+			alive = (Alive)am.get(alive);
+		} catch (HttpException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -139,6 +138,7 @@ public class SDKInterface
 		this.score = alive.getScore();
 		
 		boolean aliveBool = alive.getAlive();
+		
 		Log.i(TAG, "Alive:"+aliveBool);
 		return aliveBool;
 	}
